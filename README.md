@@ -44,6 +44,8 @@ docker build -t gateway2  Dockerfile .
 docker build -t server1  Dockerfile .
 docker build -t server1  Dockerfile .
 
+docker-compose up -d
+
 as you need
 
 
