@@ -36,8 +36,14 @@ Java tabanlı GUI istemciler ve Python ile yazılmış UDP/TCP gateway sunucular
 
 ## 🛠️ Kurulum
 
-### 1. Java Tarafı
+### 1. Python Tarafı
 
 ```bash
-javac ChatClientGUI.java ControlClient.java KeyManager.java
-java ChatClientGUI
+docker build -t gateway1  Dockerfile .
+docker build -t gateway2  Dockerfile .
+docker build -t server1  Dockerfile .
+docker build -t server1  Dockerfile .
+
+as you need
+
+
