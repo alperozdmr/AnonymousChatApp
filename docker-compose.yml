@@ -1,0 +1,104 @@
+version: "3.8"
+
+networks:
+  subnetA:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.25.0.0/16
+  subnetB:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.26.0.0/16
+  
+services:
+  server1:
+    image: server1
+    container_name: server1
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    networks:
+      subnetA:
+        ipv4_address: 172.25.0.11
+    command: ["python3", "control_server.py", "eth0"]
+    ports:
+      - "9000:9000"      # TCP kontrol portu
+     
+
+  server2:
+    image: server2
+    container_name: server2
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    networks:
+      subnetA:
+        ipv4_address: 172.25.0.12
+    command: ["python3", "control_server.py", "eth0"]
+    ports:
+      - "9001:9001"
+
+  gateway1:
+    image: gateway1    #server3          
+    container_name: gatewayA
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    # Her iki ağa da bağlanıyoruz
+    networks:
+      subnetA:
+        ipv4_address: 172.25.0.10
+      subnetB:
+        ipv4_address: 172.26.0.13
+      
+    
+    command: ["python3", "gateway_server.py", "eth0","eth1"]
+    ports:
+      - "9002:9002"      # TCP kontrol portu (host:container)
+      
+  gateway2:
+    image: gateway2 #server6            
+    container_name: gatewayB
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    # Her iki ağa da bağlanıyoruz
+    networks:
+      subnetA:
+        ipv4_address: 172.25.0.13
+      subnetB:
+        ipv4_address: 172.26.0.10
+      
+    
+    command: ["python3", "gateway_server.py", "eth0","eth1"]
+    ports:
+      - "9005:9005"      # TCP kontrol portu (host:container)    
+      
+  server4:
+    image: server4
+    container_name: server4
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    networks:
+      subnetB:
+        ipv4_address: 172.26.0.11
+    command: ["python3", "control_server.py", "eth0"]
+    ports:
+      - "9003:9003"
+  server5:
+    image: server5
+    container_name: server5
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    networks:
+      subnetB:
+        ipv4_address: 172.26.0.12
+    command: ["python3", "control_server.py", "eth0"]
+    ports:
+      - "9004:9004"
+  
+      
