@@ -1,5 +1,3 @@
-package ChatApp.src;
-
 
 import javax.crypto.Cipher;
 import javax.swing.*;
